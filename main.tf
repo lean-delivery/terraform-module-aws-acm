@@ -18,7 +18,7 @@ resource "aws_acm_certificate" "import" {
 }
 
 resource "aws_route53_record" "this" {
-  count   = "${ var.module_enabled && var.aws_issued_cert && ! var.imported_cert ? 1 : 0 }"
+  count   = "${ var.module_enabled && var.aws_issued_cert && ! var.imported_cert ? length(aws_acm_certificate.aws.0.domain_validation_options) : 0 }"
   name    = "${lookup(aws_acm_certificate.aws.0.domain_validation_options[count.index], "resource_record_name")}"
   type    = "${lookup(aws_acm_certificate.aws.0.domain_validation_options[count.index], "resource_record_type")}"
   zone_id = "${var.zone_id}"
