@@ -9,6 +9,8 @@ module "aws-cert" {
   source  = "github.com/lean-delivery/tf-module-aws-acm"
   domain   = "example.com"
   zone_id = "***********"
+
+  alternative_domains_count = 2
   alternative_domains = [
     "*.example.com",
     "*.foo.example.com"
@@ -21,7 +23,8 @@ module "aws-cert" {
 
 ## Example for Imported certificate
 
-```HCL
+TBD
+<!-- ```HCL
 module "imported-cert" {
   source  = "github.com/lean-delivery/tf-module-aws-acm"
   
@@ -36,18 +39,17 @@ module "imported-cert" {
     Name = "Example"
   }
 }
-```
+``` -->
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | alternative\_domains | Domian name alternatives for ACM certificate | list | `<list>` | no |
-| aws\_issued\_cert | Create AWS issued certificate (mutually exclusives with imported_cert) | string | `true` | no |
+| alternative\_domains\_count | Count of Domian name alternatives for ACM certificate | string | `0` | no |
 | certificate\_body | (Required for imported sertificate) The certificate's PEM-formatted public key | string | `` | no |
 | certificate\_chain | (Optional for imported sertificate) The certificate's PEM-formatted chain | string | `` | no |
 | domain | Domian name to request ACM certificate | string | - | yes |
-| imported\_cert | Create imported certificate (mutually exclusives with aws_issued_cert) | string | `false` | no |
 | module\_enabled | Switch to disable/enable module | string | `true` | no |
 | private\_key | (Required for imported sertificate) The certificate's PEM-formatted private key | string | `` | no |
 | tags | Tags | map | `<map>` | no |
@@ -58,4 +60,5 @@ module "imported-cert" {
 
 | Name | Description |
 |------|-------------|
-| certificate\_arn | ARN of created/imported certificate |
+| certificate\_arn | ARN of created certificate |
+| certificate\_domain | Domain name for cert |

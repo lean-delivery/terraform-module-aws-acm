@@ -5,16 +5,15 @@ variable "zone_id" {
 module "aws-cert" {
   source = "../"
 
-  module_enabled = "false"
+  #  module_enabled = "false"
 
   domain  = "*.test.brb-labs.com"
   zone_id = "${var.zone_id}"
-
+  alternative_domains_count = 2
   alternative_domains = [
     "*.first.test.brb-labs.com",
     "*.second.test.brb-labs.com",
   ]
-
   tags {
     Name = "Example"
   }

@@ -3,15 +3,15 @@ variable "module_enabled" {
   default     = "true"
 }
 
-variable "aws_issued_cert" {
-  description = "Create AWS issued certificate (mutually exclusives with imported_cert)"
-  default     = "true"
-}
+# variable "aws_issued_cert" {
+#   description = "Create AWS issued certificate (mutually exclusives with imported_cert)"
+#   default     = "true"
+# }
 
-variable "imported_cert" {
-  description = "Create imported certificate (mutually exclusives with aws_issued_cert)"
-  default     = "false"
-}
+# variable "imported_cert" {
+#   description = "Create imported certificate (mutually exclusives with aws_issued_cert)"
+#   default     = "false"
+# }
 
 variable "domain" {
   description = "Domian name to request ACM certificate"
@@ -24,6 +24,11 @@ variable "zone_id" {
 variable "alternative_domains" {
   description = "Domian name alternatives for ACM certificate"
   default     = []
+}
+
+variable "alternative_domains_count" {
+  description = "Count of Domian name alternatives for ACM certificate"
+  default     = "0"
 }
 
 variable "validate" {
