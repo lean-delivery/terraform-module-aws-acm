@@ -9,6 +9,7 @@ resource "aws_acm_certificate" "aws" {
 
   lifecycle {
     create_before_destroy = true
+    ignore_changes = ["subject_alternative_names"]
   }
 
   tags = "${var.tags}"
