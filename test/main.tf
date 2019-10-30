@@ -7,12 +7,12 @@ module "aws-cert" {
 
   #  module_enabled = "false"
 
-  domain  = "*.test.brb-labs.com"
-  zone_id = "${var.zone_id}"
+  domain                    = "*.example.com"
+  zone_id                   = "${var.zone_id}"
   alternative_domains_count = 2
   alternative_domains = [
-    "*.first.test.brb-labs.com",
-    "*.second.test.brb-labs.com",
+    "*.first.example.com",
+    "*.second.example.com",
   ]
   tags {
     Name = "Example"

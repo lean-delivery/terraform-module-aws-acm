@@ -1,9 +1,9 @@
 resource "aws_acm_certificate" "aws" {
-  count = "${ var.module_enabled ? 1 : 0 }"
+  count = var.module_enabled ? 1 : 0
 
   # count                     = "${ var.module_enabled && var.aws_issued_cert && ! var.imported_cert ? 1 : 0 }"
-  domain_name               = "${var.domain}"
-  subject_alternative_names = ["${var.alternative_domains}"]
+  domain_name               = var.domain
+  subject_alternative_names = var.alternative_domains
 
   validation_method = "DNS"
 
@@ -11,7 +11,7 @@ resource "aws_acm_certificate" "aws" {
     create_before_destroy = true
   }
 
-  tags = "${var.tags}"
+  tags = var.tags
 }
 
 # resource "aws_acm_certificate" "import" {
@@ -24,18 +24,18 @@ resource "aws_acm_certificate" "aws" {
 # }
 
 resource "aws_route53_record" "this" {
-  count = "${ var.module_enabled ? var.alternative_domains_count + 1 : 0 }"
+  count = var.module_enabled ? var.alternative_domains_count + 1 : 0
 
   # count   = "${ var.module_enabled && var.aws_issued_cert && ! var.imported_cert ? length(aws_acm_certificate.aws.0.domain_validation_options) : 0 }"
-  name    = "${lookup(aws_acm_certificate.aws.0.domain_validation_options[count.index], "resource_record_name")}"
-  type    = "${lookup(aws_acm_certificate.aws.0.domain_validation_options[count.index], "resource_record_type")}"
-  zone_id = "${var.zone_id}"
-  records = ["${lookup(aws_acm_certificate.aws.0.domain_validation_options[count.index], "resource_record_value")}"]
+  name    = aws_acm_certificate.aws.0.domain_validation_options[count.index]["resource_record_name"]
+  type    = aws_acm_certificate.aws.0.domain_validation_options[count.index]["resource_record_type"]
+  zone_id = var.zone_id
+  records = aws_acm_certificate.aws.0.domain_validation_options[count.index]["resource_record_value"]
   ttl     = 60
 }
 
 resource "aws_acm_certificate_validation" "this" {
-  count                   = "${ var.module_enabled ? 1 : 0 }"
-  certificate_arn         = "${aws_acm_certificate.aws.arn}"
-  validation_record_fqdns = ["${aws_route53_record.this.*.fqdn}"]
+  count                   = var.module_enabled ? 1 : 0
+  certificate_arn         = aws_acm_certificate.aws[0].arn
+  validation_record_fqdns = aws_route53_record.this.*.fqdn
 }
