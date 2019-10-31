@@ -30,7 +30,7 @@ resource "aws_route53_record" "this" {
   name    = aws_acm_certificate.aws.0.domain_validation_options[count.index]["resource_record_name"]
   type    = aws_acm_certificate.aws.0.domain_validation_options[count.index]["resource_record_type"]
   zone_id = var.zone_id
-  records = aws_acm_certificate.aws.0.domain_validation_options[count.index]["resource_record_value"]
+  records = [aws_acm_certificate.aws.0.domain_validation_options[count.index]["resource_record_value"]]
   ttl     = 60
 }
 
@@ -39,3 +39,4 @@ resource "aws_acm_certificate_validation" "this" {
   certificate_arn         = aws_acm_certificate.aws[0].arn
   validation_record_fqdns = aws_route53_record.this.*.fqdn
 }
+
