@@ -32,6 +32,7 @@ resource "aws_route53_record" "this" {
   zone_id = "${var.zone_id}"
   records = ["${lookup(aws_acm_certificate.aws.0.domain_validation_options[count.index], "resource_record_value")}"]
   ttl     = 60
+  allow_overwrite = true
 }
 
 resource "aws_acm_certificate_validation" "this" {
